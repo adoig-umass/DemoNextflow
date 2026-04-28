@@ -29,6 +29,73 @@ wsl --install -d Ubuntu"
 
 And you should now have a linux virtual machine on your windows PC!
 
+Make a working directory by terminaling 
+
+"mkdir Demo-nextflow"
+
+## Install docker
+Step 1: Open an Ubuntu session in WSL
+Three ways to do this — pick whichever your students prefer:
+
+From Start Menu: type "Ubuntu" and click the Ubuntu app
+From Windows Terminal: open Windows Terminal, click the dropdown arrow next to the + tab, choose Ubuntu
+From PowerShell or Command Prompt: type wsl and press Enter (drops you into your default WSL distro)
+
+You should land at a prompt like andy@Cray:~$.
+Step 2: Confirm WSL2 (not WSL1)
+Docker Engine needs WSL2 because it requires a real Linux kernel. From PowerShell on Windows (not inside Ubuntu), run:
+powershellwsl --list --verbose
+The VERSION column should say 2. If it says 1, convert with:
+powershellwsl --set-version Ubuntu 2
+Step 3: Update Ubuntu and remove any old Docker packages
+Inside Ubuntu:
+bashsudo apt update
+sudo apt upgrade -y
+Then clear out any old or conflicting Docker packages that may have been installed before:
+bashfor pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
+    sudo apt remove -y $pkg 2>/dev/null
+done
+Don't worry if it reports nothing to remove — that just means the system was clean.
+Step 4: Add Docker's official APT repository
+This is the critical part — it's what gives you the up-to-date docker-ce package instead of Ubuntu's older docker.io package. Three sub-steps: install prerequisites, add Docker's GPG key, add the repo.
+bash# Prerequisites for fetching the GPG key over HTTPS
+sudo apt install -y ca-certificates curl
+
+# Create the keyring directory
+sudo install -m 0755 -d /etc/apt/keyrings
+
+# Download Docker's signing key
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add Docker's repo to APT's sources, pinned to your Ubuntu version
+This is from a Claude interaction:
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Refresh the package index now that Docker's repo is included
+sudo apt update
+The $(. /etc/os-release && echo "$VERSION_CODENAME") expansion auto-detects your Ubuntu codename (e.g. noble for 24.04, jammy for 22.04). Worth pointing out to students — copy-pasting other people's commands often fails because they hardcode a different codename.
+Step 5: Install Docker Engine
+bashsudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+What each piece is:
+
+docker-ce — the daemon (the actual container engine)
+docker-ce-cli — the docker command-line client
+containerd.io — the lower-level container runtime Docker uses under the hood
+docker-buildx-plugin — modern image builder
+docker-compose-plugin — docker compose subcommand for multi-container apps
+
+Step 6: Start the Docker daemon
+This is where WSL has a quirk worth knowing about. On a normal Ubuntu install, systemd would auto-start Docker. WSL's systemd support is opt-in and can be flaky. The most reliable approach in WSL is to start Docker manually:
+bashsudo service docker start
+You should see * Starting Docker: docker [ OK ].
+To check it's running:
+bashsudo service docker status
+
 ## Docker instance to keep the environment stable and isolated
 Use the dockerfile uploaded to the repository to build a container to run the demo. Copy the Dockerfile to the directory from which you will be working from.
 
