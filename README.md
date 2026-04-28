@@ -31,7 +31,10 @@ And you should now have a linux virtual machine on your windows PC!
 
 Make a working directory by terminaling 
 
-"mkdir Demo-nextflow"
+" cd ~
+mkdir Demo-nextflow"
+
+And then downloading and dropping the files from the repo to this directory
 
 ## Install docker
 Step 1: Open an Ubuntu session in WSL
