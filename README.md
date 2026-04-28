@@ -7,3 +7,9 @@ Use the dockerfile uploaded to the repository to build a container to run the de
 
 Navigate to the directory you will be working in and use the command
   docker build -t nf-rnaseq-demo:0.1 .
+
+This should take a few minutes, and then you can verify you have generated the container image by running a search of installed Docker images using 
+
+  docker images | grep nf-rnaseq-demo
+
+  
