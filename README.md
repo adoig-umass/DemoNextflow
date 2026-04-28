@@ -35,23 +35,10 @@ Make a working directory by terminaling
 
 ## Install docker
 Step 1: Open an Ubuntu session in WSL
-Three ways to do this — pick whichever your students prefer:
-
-From Start Menu: type "Ubuntu" and click the Ubuntu app
-From Windows Terminal: open Windows Terminal, click the dropdown arrow next to the + tab, choose Ubuntu
-From PowerShell or Command Prompt: type wsl and press Enter (drops you into your default WSL distro)
 
 You should land at a prompt like andy@Cray:~$.
-Step 2: Confirm WSL2 (not WSL1)
-Docker Engine needs WSL2 because it requires a real Linux kernel. From PowerShell on Windows (not inside Ubuntu), run:
-powershellwsl --list --verbose
-The VERSION column should say 2. If it says 1, convert with:
-powershellwsl --set-version Ubuntu 2
-Step 3: Update Ubuntu and remove any old Docker packages
-Inside Ubuntu:
-bashsudo apt update
-sudo apt upgrade -y
-Then clear out any old or conflicting Docker packages that may have been installed before:
+
+Clear out any old or conflicting Docker packages that may have been installed before:
 bashfor pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
     sudo apt remove -y $pkg 2>/dev/null
 done
