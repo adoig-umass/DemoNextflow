@@ -103,7 +103,27 @@ This should take a few minutes, and then you can verify you have generated the c
   docker run --rm nf-rnaseq-demo:0.1 fastp --version
   docker run --rm nf-rnaseq-demo:0.1 multiqc --version
 
-  If the CLI spits out the version number, we are ready to download a test data sample.
+  If the CLI spits out the version number, we are ready to download nextflow.
+
+  ## Installing Nextflow
+  First, install java
+
+  sudo apt update
+sudo apt install -y default-jre
+
+
+Then, install nextflow
+cd ~
+curl -s https://get.nextflow.io | bash
+
+Load it to your path
+chmod +x nextflow
+sudo mv nextflow /usr/local/bin/
+
+finally, run it the first time to install the software
+nextflow -version
+
+Now navigate back to your nextflow demo directory.
 
   ## Download the test dataset from the nextflow repo
   Let's fetch some data using the download_test_data.sh shell script found in this repo.
