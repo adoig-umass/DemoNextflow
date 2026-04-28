@@ -48,14 +48,14 @@ This is the critical part — it's what gives you the up-to-date docker-ce packa
 bash# Prerequisites for fetching the GPG key over HTTPS
 sudo apt install -y ca-certificates curl
 
-# Create the keyring directory
+## Create the keyring directory
 sudo install -m 0755 -d /etc/apt/keyrings
 
-# Download Docker's signing key
+## Download Docker's signing key
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# Add Docker's repo to APT's sources, pinned to your Ubuntu version
+## Add Docker's repo to APT's sources, pinned to your Ubuntu version
 This is from a Claude interaction:
 
 echo \
@@ -63,7 +63,7 @@ echo \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# Refresh the package index now that Docker's repo is included
+## Refresh the package index now that Docker's repo is included
 sudo apt update
 The $(. /etc/os-release && echo "$VERSION_CODENAME") expansion auto-detects your Ubuntu codename (e.g. noble for 24.04, jammy for 22.04). Worth pointing out to students — copy-pasting other people's commands often fails because they hardcode a different codename.
 Step 5: Install Docker Engine
